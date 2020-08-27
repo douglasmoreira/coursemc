@@ -1,6 +1,10 @@
 package com.douglasmoreira.coursemc.resources;
 
 import com.douglasmoreira.coursemc.domain.Category;
+import com.douglasmoreira.coursemc.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/category")
 public class ResourceCategory {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Category> list() {
-        Category cat1 = new Category(1, "computing");
-        Category cat2 = new Category(1, "office");
-        List<Category> list = new ArrayList<>();
-        list.add(cat1);
-        list.add(cat2);
-        return list;
+    @Autowired
+    private CategoryService categoryService;
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
+
+        return ResponseEntity.ok().body(categoryService.findById(id));
     }
 }
