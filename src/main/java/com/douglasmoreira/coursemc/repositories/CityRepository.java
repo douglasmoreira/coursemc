@@ -1,9 +1,9 @@
 package com.douglasmoreira.coursemc.repositories;
 
-import com.douglasmoreira.coursemc.domain.Category;
+import com.douglasmoreira.coursemc.domain.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
+public interface CityRepository extends JpaRepository<City, Integer> {
 }
