@@ -2,13 +2,13 @@ package com.douglasmoreira.coursemc.services;
 
 import com.douglasmoreira.coursemc.domain.Category;
 import com.douglasmoreira.coursemc.repositories.CategoryRepository;
+import com.douglasmoreira.coursemc.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -33,5 +33,18 @@ public class CategoryServiceTest {
         assertNotNull(result);
         assertTrue(result.getId().equals(id));
         assertTrue(result.getName().equals(name));
+    }
+
+    @Test
+    public void shouldThrowObjectNotFoundException() {
+        Integer id = 1;
+
+        try {
+            categoryService.findById(id);
+        } catch (ObjectNotFoundException e) {
+            assertEquals("object not found id: " + id +
+                    ", Type: " + Category.class.getName(), e.getMessage());
+        }
+
     }
 }

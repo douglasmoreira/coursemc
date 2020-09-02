@@ -1,6 +1,7 @@
 package com.douglasmoreira.coursemc.domain;
 
 import com.douglasmoreira.coursemc.domain.enums.ClientType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,8 @@ public class Client implements Serializable {
     private String cpfOrCnpj;
     private Integer type;
 
-    @OneToMany(mappedBy = "client")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
     public List<Address> addresses = new ArrayList<>();
 
     @ElementCollection

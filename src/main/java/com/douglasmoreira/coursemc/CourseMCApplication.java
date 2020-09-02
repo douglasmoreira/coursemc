@@ -44,12 +44,14 @@ public class CourseMCApplication implements CommandLineRunner {
         cat2.getProducts().addAll(asList(p2));
 
         p1.getCategories().addAll(asList(cat1));
+        p1.getCategories().addAll(asList(cat1));
+        p1.getCategories().addAll(asList(cat1));
         p2.getCategories().addAll(asList(cat1, cat2));
         p3.getCategories().addAll(asList(cat1));
 
-        categoryRepository.saveAll(asList(cat1, cat2));
-
         productRepository.saveAll(asList(p1, p2, p3));
+
+        categoryRepository.saveAll(asList(cat1, cat2));
 
         State state1 = new State(null, "Minas Gerais");
         State state2 = new State(null, "São Paulo");
@@ -75,6 +77,6 @@ public class CourseMCApplication implements CommandLineRunner {
         client.getAddresses().addAll(asList(address1, address2));
 
         clientRepository.save(client);
-        addressRepository.saveAll(asList(address1, address2));
+//        addressRepository.saveAll(asList(address1, address2));
     }
 }
