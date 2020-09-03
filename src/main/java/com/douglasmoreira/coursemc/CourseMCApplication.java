@@ -2,11 +2,14 @@ package com.douglasmoreira.coursemc;
 
 import com.douglasmoreira.coursemc.domain.*;
 import com.douglasmoreira.coursemc.domain.enums.ClientType;
+import com.douglasmoreira.coursemc.domain.enums.PaymentStatus;
 import com.douglasmoreira.coursemc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.text.SimpleDateFormat;
 
 import static java.util.Arrays.asList;
 
@@ -25,6 +28,10 @@ public class CourseMCApplication implements CommandLineRunner {
     private ClientRepository clientRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private RequestRepository requestRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(CourseMCApplication.class, args);
@@ -64,8 +71,8 @@ public class CourseMCApplication implements CommandLineRunner {
         state2.getCities().addAll(asList(city2));
         state2.getCities().addAll(asList(city3));
 
-        stateRepository.saveAll(asList(state1,state2));
-        cityRepository.saveAll(asList(city1,city2,city3));
+        stateRepository.saveAll(asList(state1, state2));
+        cityRepository.saveAll(asList(city1, city2, city3));
 
         Client client = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PHYSICAL_PERSON);
 
@@ -77,6 +84,22 @@ public class CourseMCApplication implements CommandLineRunner {
         client.getAddresses().addAll(asList(address1, address2));
 
         clientRepository.save(client);
-//        addressRepository.saveAll(asList(address1, address2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Request request1 = new Request(null, sdf.parse("30/09/2017 10:32"), client, address1);
+        Request request2 = new Request(null, sdf.parse("10/10/2017 19:35"), client, address2);
+
+        Payment payment1 = new PaymentWithCard(null, PaymentStatus.SETTLED, request1, 6);
+        request1.setPayment(payment1);
+        Payment payment2 = new PaymentWithBillet(null, PaymentStatus.PENDING, request2, sdf.parse("20/10/2017 00:00"), null);
+        request2.setPayment(payment2);
+
+        client.getRequests().addAll(asList(request1, request2));
+
+        requestRepository.saveAll(asList(request1, request2));
+        paymentRepository.saveAll(asList(payment1, payment2));
+
+
     }
 }
